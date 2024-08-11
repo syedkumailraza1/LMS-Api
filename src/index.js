@@ -10,3 +10,5 @@ connectDB().then(()=>{
     console.log(`Error in db Connection: ${error}`);
     
 })
+
+export default index
