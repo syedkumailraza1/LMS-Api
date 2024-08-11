@@ -3,6 +3,7 @@ import AdminRoute from "./route/admin.routes.js";
 import UserRoute from "./route/user.routers.js";
 import cors from "cors"
 import cookieParser from "cookie-parser";
+import res from "express/lib/response.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(cookieParser())
 
 // Use the routes
+
 app.use("/api/v1/admin", AdminRoute);
 app.use("/api/v1/user", UserRoute);
 
