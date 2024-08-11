@@ -1,6 +1,6 @@
 import req from "express/lib/request.js";
-import { connectDB } from "./DB/index.js";
-import app from "./app.js";
+import { connectDB } from "./src/DB/index.js";
+import app from "./src/app.js";
 const port = process.env.PORT
 
 connectDB().then(()=>{
@@ -14,5 +14,3 @@ connectDB().then(()=>{
     console.log(`Error in db Connection: ${error}`);
     
 })
-
-export default index
