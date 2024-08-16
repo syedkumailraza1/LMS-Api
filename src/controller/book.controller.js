@@ -87,30 +87,43 @@ const getallBooks = async (req,res)=>{
     }
   }
 
-  const UpdateBook = async (req,res)=>{
-    try {
-        //get book from param
-        const book = req.body 
+ const UpdateBook = async (req, res) => {
+  try {
+    // Get book details from the request body
+    const book = req.body;
 
-        //check if book exist
-        const Existingbook = await Book.findById(book._id);
-        if(!book){
-            return res.status(404).json({ message: "Book not found" });
-        }
-
-        //update
-        await Book.updateOne(
-            {"_id": book._id},
-            {$set: book}
-        )
-
-        res.json({ message: "Book updated successfully" });
-        
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error:', error });
-      console.log(error);
+    // Check if the book exists in the database
+    const Existingbook = await Book.findById(book._id);
+    if (!Existingbook) {
+      return res.status(404).json({ message: "Book not found" });
     }
+
+    // Check if a cover image is provided
+    let cover;
+    const coverLocalPath = req.files?.cover?.[0]?.path;
+    if (coverLocalPath) {
+      cover = await uploadOnCloudinary(coverLocalPath);
+      if (!cover) {
+        return res.status(400).json({ message: "Failed to upload cover image" });
+      }
+      // Set the new cover URL in the book object
+      book.cover = cover;
+    }
+
+    // Update the book in the database
+    await Book.updateOne(
+      { _id: book._id },
+      { $set: book }
+    );
+
+    // Respond with success
+    res.json({ message: "Book updated successfully" });
+
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error:', details: error.message });
+    console.log(error);
   }
+};
 
   const searchBook = async (req,res)=>{
     try {
