@@ -16,9 +16,9 @@ app.use('/api/json', express.json());
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser())
-// Increase the file size limit
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+// // Increase the file size limit
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Use the routes
 
