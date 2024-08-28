@@ -7,30 +7,22 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadOnCloudinary = async function(buffer) {
-    try {
-        if (buffer) {
-            const response = await cloudinary.uploader.upload_stream({
-                folder: 'book_covers', // Optional: specify a folder
-            }, (error, result) => {
-                if (result) {
-                    console.log("File uploaded successfully!", result.url);
-                    return result.url;
+const uploadOnCloudinary = async (buffer) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            { resource_type: 'image' },
+            (error, result) => {
+                if (error) {
+                    console.error("Cloudinary upload error:", error);
+                    reject(error);
                 } else {
-                    console.error("Upload error:", error);
-                    return null;
+                    resolve(result);
                 }
-            }).end(buffer);
-            return response;
-        } else {
-            return null;
-        }
-    } catch (error) {
-        console.error("Error during upload:", error);
-        return null;
-    }
-}
-
+            }
+        );
+        stream.end(buffer);
+    });
+};
 export { uploadOnCloudinary };
 
 

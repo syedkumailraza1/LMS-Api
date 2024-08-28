@@ -39,23 +39,11 @@ if (!cover) {
     return res.status(400).json({ message: "Failed to upload cover image" });
 }
 
-console.log(cover);
+console.log("Cover URL:", cover.secure_url);
 
 
 
-    // const coverLocalPath = req.files?.cover?.[0]?.path;
-    // if (!coverLocalPath) {
-    //     return res.status(400).json({ message: "Cover image is required" });
-    // }
-    // console.log(coverLocalPath);
 
-    // const cover = await uploadOnCloudinary(coverLocalPath);
-    // if (!cover) {
-    //     return res.status(400).json({ message: "Failed to upload cover image" });
-    // }
-
-    // console.log(cover);
-    
 
     // Store the book in DB
     const book = await Book.create({
@@ -66,6 +54,8 @@ console.log(cover);
     });
 
     // Send the success message to the user
+    console.log(book);
+    
     res.status(201).json({
         message: "Book added successfully!",
         book
