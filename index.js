@@ -3,6 +3,8 @@ import app from "./src/app.js";
 
 const port = process.env.PORT || 3000;
 
+
+
 connectDB().then(() => {
     app.get('/', (req, res) => {
         res.send("Hello world");

@@ -22,4 +22,5 @@ app.use(cookieParser())
 app.use("/api/v1/admin", AdminRoute);
 app.use("/api/v1/user", UserRoute);
 
+
 export default app;

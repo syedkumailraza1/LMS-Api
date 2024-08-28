@@ -27,19 +27,34 @@ const postBook = async (req, res) => {
         return res.status(400).json({ error: "Book already exists" });
     }
 
+    
     // Get image from user and check
-    const coverLocalPath = req.files?.cover?.[0]?.path;
-    if (!coverLocalPath) {
-        return res.status(400).json({ message: "Cover image is required" });
-    }
-    console.log(coverLocalPath);
+const coverBuffer = req.files?.cover?.[0]?.buffer;
+if (!coverBuffer) {
+    return res.status(400).json({ message: "Cover image is required" });
+}
 
-    const cover = await uploadOnCloudinary(coverLocalPath);
-    if (!cover) {
-        return res.status(400).json({ message: "Failed to upload cover image" });
-    }
+const cover = await uploadOnCloudinary(coverBuffer);
+if (!cover) {
+    return res.status(400).json({ message: "Failed to upload cover image" });
+}
 
-    console.log(cover);
+console.log(cover);
+
+
+
+    // const coverLocalPath = req.files?.cover?.[0]?.path;
+    // if (!coverLocalPath) {
+    //     return res.status(400).json({ message: "Cover image is required" });
+    // }
+    // console.log(coverLocalPath);
+
+    // const cover = await uploadOnCloudinary(coverLocalPath);
+    // if (!cover) {
+    //     return res.status(400).json({ message: "Failed to upload cover image" });
+    // }
+
+    // console.log(cover);
     
 
     // Store the book in DB
@@ -47,7 +62,7 @@ const postBook = async (req, res) => {
         title,
         author,
         genre,
-        cover: cover
+        cover: cover.secure_url 
     });
 
     // Send the success message to the user
@@ -87,31 +102,30 @@ const getallBooks = async (req,res)=>{
     }
   }
 
-  const UpdateBook = async (req, res) => {
+  const UpdateBook = async (req,res)=>{
     try {
-        const book = req.body;
+        //get book from param
+        const book = req.body 
 
-        // Check if book exists
+        //check if book exist
         const Existingbook = await Book.findById(book._id);
-        if (!Existingbook) {
+        if(!book){
             return res.status(404).json({ message: "Book not found" });
         }
 
-        // Check if there's an uploaded file
-        const cover = req.file?.path; // The Cloudinary URL of the uploaded image
-        if (cover) {
-            book.cover = cover; // Update the cover field with the Cloudinary URL
-        }
-
-        // Update the book details
-        await Book.updateOne({ "_id": book._id }, { $set: book });
+        //update
+        await Book.updateOne(
+            {"_id": book._id},
+            {$set: book}
+        )
 
         res.json({ message: "Book updated successfully" });
+        
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error', details: error });
-        console.error(error);
+        res.status(500).json({ error: 'Internal server error:', error });
+      console.log(error);
     }
-};
+  }
   
 
   const searchBook = async (req,res)=>{
