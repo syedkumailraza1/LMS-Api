@@ -16,10 +16,14 @@ app.use('/api/json', express.json());
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser())
-// // Increase the file size limit
-// app.use(bodyParser.json({ limit: '50mb' }));
-// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+const corsOptions = {
+  origin: 'http://127.0.0.1:5500', // Replace with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Allow cookies or credentials to be sent
+};
 
+app.use(cors(corsOptions));
 // Use the routes
 
 app.use("/api/v1/admin", AdminRoute);
