@@ -16,7 +16,7 @@ app.use('/api/json', express.json());
 app.use(express.json());
 app.use(cookieParser())
 const corsOptions = {
-  origin: *,
+  origin: 'http://127.0.0.1:5500',
   credentials: true, // This allows credentials (cookies, etc.) to be sent with the request
 };
 
