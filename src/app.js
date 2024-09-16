@@ -14,13 +14,10 @@ app.get("/", (req, res) => {
 // Apply JSON body parser middleware only to specific routes that need it
 app.use('/api/json', express.json());
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser())
 const corsOptions = {
-  origin: 'http://127.0.0.1:5500', // Replace with your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Allow cookies or credentials to be sent
+  origin: 'http://localhost:5500',
+  credentials: true, // This allows credentials (cookies, etc.) to be sent with the request
 };
 
 app.use(cors(corsOptions));
