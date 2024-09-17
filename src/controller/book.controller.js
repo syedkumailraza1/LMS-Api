@@ -99,7 +99,7 @@ const getallBooks = async (req,res)=>{
 
         //check if book exist
         const Existingbook = await Book.findById(book._id);
-        if(!book){
+        if(!Existingbook){
             return res.status(404).json({ message: "Book not found" });
         }
 
@@ -112,7 +112,7 @@ const getallBooks = async (req,res)=>{
         res.json({ message: "Book updated successfully" });
         
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error:', error });
+         res.status(500).json({ error: 'Internal server error', details: error.message });
       console.log(error);
     }
   }
